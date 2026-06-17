@@ -310,58 +310,6 @@ function initAmbientGlow() {
   document.body.appendChild(container);
 }
 
-// --- SPLASH DE PINTURA DE BIENVENIDA AL CARGAR LA PÁGINA ---
-function initWelcomeSplash() {
-  if (document.querySelector('.welcome-splash-overlay')) return;
-
-  const colors = ['#E4007C', '#9ABC05', '#236130'];
-  const coverColor = colors[Math.floor(Math.random() * colors.length)];
-  const coverPath = "M50,5 C70,5 85,15 92,35 C99,55 95,75 80,88 C65,99 40,99 22,88 C5,77 1,55 8,35 C15,15 30,5 50,5 Z";
-  const dropPaths = [
-    "M50,10 C65,10 75,20 80,35 C85,50 95,55 90,70 C85,85 75,90 60,85 C45,90 35,80 25,75 C15,70 10,55 15,40 C20,25 30,20 40,15 Z",
-    "M55,15 C68,8 78,18 85,28 C92,38 98,52 92,65 C86,78 72,88 58,85 C44,82 32,92 22,82 C12,72 18,58 15,45 C12,32 25,22 35,18 Z",
-    "M48,12 C62,5 82,15 88,28 C94,41 96,56 88,68 C80,80 65,92 50,88 C35,84 22,95 12,82 C2,69 15,52 14,38 C13,24 25,18 35,16 Z"
-  ];
-  const cornerPositions = [
-    { top: '8%', left: '6%' },
-    { top: '12%', left: '92%' },
-    { top: '88%', left: '10%' },
-    { top: '90%', left: '90%' }
-  ];
-
-  const overlay = document.createElement('div');
-  overlay.className = 'welcome-splash-overlay';
-  overlay.innerHTML = `<svg class="welcome-splash-cover" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${coverPath}" fill="${coverColor}"></path></svg>`;
-  document.body.appendChild(overlay);
-
-  // Gotas residuales que aparecen en algunas esquinas mientras se abre la salpicadura
-  const numDrops = 2 + Math.floor(Math.random() * 2); // 2 o 3 gotas
-  const chosenCorners = cornerPositions.sort(() => Math.random() - 0.5).slice(0, numDrops);
-
-  chosenCorners.forEach((pos, i) => {
-    const dropColor = colors[Math.floor(Math.random() * colors.length)];
-    const path = dropPaths[Math.floor(Math.random() * dropPaths.length)];
-    const size = 60 + Math.random() * 40;
-    const rot = Math.floor(Math.random() * 360);
-
-    const drop = document.createElement('div');
-    drop.className = 'welcome-splash-drop';
-    drop.style.width = `${size}px`;
-    drop.style.height = `${size}px`;
-    drop.style.top = pos.top;
-    drop.style.left = pos.left;
-    drop.style.setProperty('--rot', `${rot}deg`);
-    drop.style.animationDelay = `${0.35 + i * 0.08}s`;
-    drop.innerHTML = `<svg viewBox="0 0 100 100" style="width:100%;height:100%;"><path d="${path}" fill="${dropColor}"></path></svg>`;
-    overlay.appendChild(drop);
-  });
-
-  // Limpiar el overlay del DOM una vez terminan todas las animaciones
-  setTimeout(() => {
-    overlay.remove();
-  }, 2100);
-}
-
 // --- SALPICADURAS ESTAMPADAS ALEATORIAMENTE MIENTRAS SE NAVEGA ---
 function initPageDrips() {
   if (document.querySelector('.page-drip-container')) return;
@@ -438,7 +386,6 @@ function initMobileNav() {
 
 // --- CONFIGURACIÓN GLOBAL AL CARGAR ---
 document.addEventListener('DOMContentLoaded', () => {
-  initWelcomeSplash();
   initPageDrips();
   initAmbientGlow();
   updateHeaderUI();

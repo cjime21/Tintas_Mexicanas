@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Colores de la transición aleatorios o basados en la página
   const transitionColors = ['#236130', '#9ABC05', '#E4007C'];
   const wavePath = "M0,90 C120,40 240,130 360,80 C480,30 600,120 720,70 C840,20 960,110 1080,60 C1200,10 1320,100 1440,60 L1440,1000 L0,1000 Z";
+  const waveDuration = '1.8s';
 
   // Crear la onda (SVG) dentro del overlay si no existe
   let wave = overlay.querySelector('.page-transition-wave');
@@ -19,14 +20,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   const wavePathEl = wave.querySelector('path');
 
-  // Animación de entrada al cargar la página (revelar contenido)
-  // Iniciamos cubriendo la pantalla con la onda y luego deslizándola hacia afuera
-  wavePathEl.setAttribute('fill', transitionColors[Math.floor(Math.random() * transitionColors.length)]);
-  wave.style.transform = 'translateY(0%)';
+  // Usar el mismo color que se eligió en la página anterior (si venimos de un clic interno)
+  // para que no haya un cambio brusco de color justo al cambiar de página
+  const carriedColor = sessionStorage.getItem('tintas_transition_color');
+  sessionStorage.removeItem('tintas_transition_color');
 
-  // Pequeño delay para iniciar la animación de salida del overlay
+  // Al cargar la página: la onda ya cubre la pantalla por completo y luego baja para revelar el contenido
+  wavePathEl.setAttribute('fill', carriedColor || transitionColors[Math.floor(Math.random() * transitionColors.length)]);
+  wave.style.transition = 'none';
+  wave.style.transform = 'translateY(0%)';
+  void wave.offsetHeight; // Forzar reflow para aplicar la posición antes de animar
+  wave.style.transition = `transform ${waveDuration} cubic-bezier(0.77, 0, 0.175, 1)`;
+
   setTimeout(() => {
-    wave.style.transform = 'translateY(-110%)';
+    wave.style.transform = 'translateY(110%)';
   }, 50);
 
   // Interceptar clics en enlaces para animar la transición de salida
@@ -47,17 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
     if (href && !isExternal && !isAnchor && !isJs && !isWhatsApp && !targetBlank) {
       e.preventDefault();
 
-      // Elegir un color para la transición
+      // Elegir un color para la transición y recordarlo para la página siguiente
       const selectedColor = transitionColors[Math.floor(Math.random() * transitionColors.length)];
       wavePathEl.setAttribute('fill', selectedColor);
+      sessionStorage.setItem('tintas_transition_color', selectedColor);
 
-      // Iniciar animación (la onda sube y cubre la pantalla)
+      // Forzar que la onda siempre entre desde abajo (sin transición visible)
+      wave.style.transition = 'none';
+      wave.style.transform = 'translateY(110%)';
+      void wave.offsetHeight; // Forzar reflow para aplicar la posición antes de animar
+      wave.style.transition = `transform ${waveDuration} cubic-bezier(0.77, 0, 0.175, 1)`;
+
+      // La onda sube por completo, despacio, hasta cubrir toda la pantalla
       wave.style.transform = 'translateY(0%)';
 
-      // Redirigir una vez completada la transición (800ms)
+      // Redirigir una vez que la onda terminó de subir
       setTimeout(() => {
         window.location.href = href;
-      }, 700);
+      }, 1800);
     }
   });
 });
