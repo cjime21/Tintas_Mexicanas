@@ -3130,8 +3130,8 @@ h6 {
 }
 
 @media (max-width: 480px) {
-  .brand-text {
-    display: none;
+  .header-brand {
+    font-size: 1.1rem;
   }
   .nav-menu {
     gap: 0.7rem;
