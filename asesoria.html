@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Asesoría Inteligente | Tintas de México</title>
+  <link rel="icon" type="image/png" href="img/Ícono.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER NAVEGACIÓN -->
+  <header class="main-header">
+    <a href="index.html" class="header-brand">
+      <div class="header-brand-logo-wrapper">
+        <img src="img/Logo.png" alt="Icono Tintas de México">
+      </div>
+      <div class="brand-text">Tintas de <span>México</span></div>
+    </a>
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="info.html" class="nav-link">Nosotros</a></li>
+        <li><a href="productos.html" class="nav-link">Productos</a></li>
+        <li><a href="asesoria.html" class="nav-link">Asesoría</a></li>
+        <li><a href="contacto.html" class="nav-link">Contacto</a></li>
+        <li id="nav-cart-container"></li>
+        <li id="nav-login-container"></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SECCIÓN CHATBOT -->
+  <section class="chat-section">
+    <div class="section-title-wrapper" style="margin-bottom: 2rem;">
+      <span class="section-badge">Soporte y Consultoría Gráfica</span>
+      <h1 class="section-title">Asesoría <span>Inteligente</span></h1>
+    </div>
+
+    <!-- Contenedor del Chat -->
+    <div class="chatbot-container">
+      <!-- Encabezado del Chat -->
+      <div class="chat-header">
+        <div class="chat-bot-avatar">
+          <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path></svg>
+        </div>
+        <div class="chat-bot-info">
+          <h3>TintaBot Asesor</h3>
+          <span>En línea ahora</span>
+        </div>
+      </div>
+
+      <!-- Zona de Mensajes -->
+      <div class="chat-messages" id="chat-messages-box">
+        <!-- Mensaje Inicial -->
+        <div class="chat-bubble bot">
+          ¡Hola! Soy <strong>TintaBot</strong>, tu consultor gráfico inteligente.<br><br>
+          Estoy preparado para guiarte en tus proyectos. Pregúntame sobre técnicas de serigrafía, materiales, playeras, lonas, acabados de tarjetas de presentación o tiempos de entrega. ¿Qué idea tienes hoy?
+        </div>
+        
+        <!-- Indicador de Escribiendo (Oculto por defecto) -->
+        <div class="chat-typing-indicator" id="typing-indicator">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <!-- Chips de Sugerencia -->
+      <div class="chat-suggestions">
+        <div class="chat-suggestion-chip" onclick="sendSuggested('¿Cómo elijo una malla de serigrafía?')">
+          <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg> Mallas de Serigrafía
+        </div>
+        <div class="chat-suggestion-chip" onclick="sendSuggested('¿Qué playera recomiendan?')">
+          <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><path d="M6 2L3 6v4h3v10h12V10h3V6l-3-4H6z"></path></svg> Playeras
+        </div>
+        <div class="chat-suggestion-chip" onclick="sendSuggested('¿Qué resolución requiere una lona?')">
+          <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="14" rx="2"></rect></svg> Lonas
+        </div>
+        <div class="chat-suggestion-chip" onclick="sendSuggested('¿Qué acabados hay para tarjetas?')">
+          <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"></rect></svg> Tarjetas Premium
+        </div>
+        <div class="chat-suggestion-chip" onclick="sendSuggested('¿Cuáles son los tiempos de entrega?')">
+          <svg style="width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg> Tiempos de Entrega
+        </div>
+      </div>
+
+      <!-- Formulario de Entrada -->
+      <form class="chat-input-area" id="chat-input-form">
+        <input type="text" class="chat-input" id="chat-input-field" placeholder="Escribe tu consulta aquí..." autocomplete="off">
+        <button type="submit" class="chat-send-btn" title="Enviar mensaje">➤</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER COMPARTIDO -->
+  <footer class="main-footer">
+    <div class="footer-grid">
+      <div class="footer-brand-column">
+        <h3>Tintas de <span>México</span></h3>
+        <p>Tu espacio de apoyo en consumibles gráficos y soluciones de personalización. Llevamos tus ideas al papel, vinil y textiles.</p>
+        <div class="footer-social-links">
+          <a href="#" class="footer-social-btn">FB</a>
+          <a href="#" class="footer-social-btn">IG</a>
+          <a href="https://wa.me/527712353198" target="_blank" class="footer-social-btn">WA</a>
+        </div>
+      </div>
+      <div class="footer-column">
+        <h4>Enlaces</h4>
+        <ul class="footer-links">
+          <li><a href="info.html">Nosotros</a></li>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="asesoria.html">Asesoría Bot</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Servicios</h4>
+        <ul class="footer-links">
+          <li><a href="productos.html">Tintas Serigrafía</a></li>
+          <li><a href="productos.html">Playeras Personalizadas</a></li>
+          <li><a href="productos.html">Impresión de Lonas</a></li>
+          <li><a href="productos.html">Stickers de Vinil</a></li>
+        </ul>
+      </div>
+      <div class="footer-column">
+        <h4>Contacto</h4>
+        <ul class="footer-links" style="color: rgba(0, 0, 0, 0.6); font-size: 0.85rem;">
+          <li><svg style="width: 14px; height: 14px; stroke: var(--secondary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg> Blvd. Everardo Márquez 300-Local C, Coscotitlán, 42094 Pachuca de Soto, Hgo.</li>
+          <li><svg style="width: 14px; height: 14px; stroke: var(--secondary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> 771 235 3198</li>
+          <li><svg style="width: 14px; height: 14px; stroke: var(--secondary); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle; margin-right: 5px;" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> contacto@tintasdemexico.mx</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; 2026 Tintas de México. Todos los derechos reservados. Diseñado para impactar con color.
+    </div>
+  </footer>
+
+  <!-- Elementos de interacción global -->
+  <div class="page-transition-overlay"></div>
+
+  <script src="js/main.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/transitions.js"></script>
+
+  <script>
+    const chatForm = document.getElementById('chat-input-form');
+    const inputField = document.getElementById('chat-input-field');
+    const messagesBox = document.getElementById('chat-messages-box');
+    const typingIndicator = document.getElementById('typing-indicator');
+
+    // Máquina de Estados de Conversación
+    let chatState = {
+      status: 'IDLE', // IDLE, GATHERING_QTY, DESIGN_CHECK
+      category: null,
+      qty: 0,
+      hasDesign: null
+    };
+
+    // Precios base por categoría para estimaciones rápidas
+    const PRICE_ESTIMATES = {
+      tintas: 180, // Tinta Plastisol c/u
+      playeras: 250, // Playera algodón c/u
+      lonas: 120, // Lona m2 c/u
+      tarjetas: 1.5, // Tarjeta c/u
+      volantes: 0.49, // Volante c/u
+      stickers: 3.8 // Sticker c/u
+    };
+
+    chatForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const message = inputField.value.trim();
+      if (!message) return;
+
+      appendUserMessage(message);
+      inputField.value = '';
+      
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        const botResponse = processMessage(message);
+        appendBotMessage(botResponse);
+      }, 1000);
+    });
+
+    function sendSuggested(text) {
+      appendUserMessage(text);
+      showTypingIndicator();
+      
+      setTimeout(() => {
+        const botResponse = processMessage(text);
+        appendBotMessage(botResponse);
+      }, 800);
+    }
+
+    function appendUserMessage(text) {
+      const bubble = document.createElement('div');
+      bubble.classList.add('chat-bubble', 'user');
+      bubble.textContent = text;
+      messagesBox.insertBefore(bubble, typingIndicator);
+      scrollChatToBottom();
+    }
+
+    function appendBotMessage(text) {
+      hideTypingIndicator();
+      const bubble = document.createElement('div');
+      bubble.classList.add('chat-bubble', 'bot');
+      bubble.innerHTML = text;
+      messagesBox.insertBefore(bubble, typingIndicator);
+      scrollChatToBottom();
+    }
+
+    function showTypingIndicator() {
+      typingIndicator.style.display = 'flex';
+      scrollChatToBottom();
+    }
+
+    function hideTypingIndicator() {
+      typingIndicator.style.display = 'none';
+    }
+
+    function scrollChatToBottom() {
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+
+    // PROCESAMIENTO DE CONVERSACIÓN STATEFUL
+    function processMessage(msg) {
+      const text = msg.toLowerCase();
+      const user = getCurrentUser();
+      const userName = user ? user.name : 'creativo';
+
+      // 1. Manejo del estado: GATHERING_QTY
+      if (chatState.status === 'GATHERING_QTY') {
+        const numMatch = text.match(/\d+/);
+        if (numMatch) {
+          chatState.qty = parseInt(numMatch[0]);
+          chatState.status = 'DESIGN_CHECK';
+          return `Excelente ${userName}, he registrado <strong>${chatState.qty} piezas/unidades</strong>.
+                  <br><br>
+                  Siguiente pregunta para afinar la cotización: ¿Ya cuentas con tu archivo de diseño listo en formato digital (PDF, Illustrator, Corel) o necesitas apoyo de nuestro equipo de diseño gráfico?`;
+        } else {
+          return `Para poder darte un aproximado, por favor indícame la cantidad estimada en números (por ejemplo: "50" o "100 piezas").`;
+        }
+      }
+
+      // 2. Manejo del estado: DESIGN_CHECK
+      if (chatState.status === 'DESIGN_CHECK') {
+        let designResponse = "";
+        if (text.includes('si') || text.includes('sí') || text.includes('tengo') || text.includes('listo')) {
+          chatState.hasDesign = true;
+          designResponse = `¡Estupendo! Un diseño vectorial en formato adecuado asegura una nitidez absoluta en los bordes de impresión.`;
+        } else {
+          chatState.hasDesign = false;
+          designResponse = `No te preocupes. Contamos con diseñadores expertos listos para ayudarte a optimizar tus ideas en soportes físicos.`;
+        }
+
+        // Calcular cotización final del estado
+        const priceEach = PRICE_ESTIMATES[chatState.category] || 100;
+        const total = priceEach * chatState.qty;
+        
+        let redirectBtn = `<a href="productos.html?category=${chatState.category}" class="nav-btn-login" style="display:inline-flex; align-items:center; gap:0.5rem; margin-top:1rem; text-decoration:none;">
+          <span>Explorar ${chatState.category.toUpperCase()} en Catálogo</span>
+          <svg style="width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2;" viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>`;
+
+        const finalMsg = `${designResponse}
+                          <br><br>
+                          📋 <strong>Estimación Rápida de Proyecto:</strong>
+                          <ul>
+                            <li><strong>Producto base:</strong> ${chatState.category.toUpperCase()}</li>
+                            <li><strong>Cantidad:</strong> ${chatState.qty} unidades</li>
+                            <li><strong>Costo Unitario Promedio:</strong> $${priceEach.toFixed(2)} MXN</li>
+                            <li><strong>Total Estimado:</strong> $${total.toFixed(2)} MXN</li>
+                          </ul>
+                          <em>(Esta es una estimación. Una vez iniciada sesión en el catálogo, puedes agregar el producto exacto al carrito y enviar tu nota formal a WhatsApp).</em>
+                          <br>
+                          ${redirectBtn}`;
+
+        // Resetear estado
+        chatState.status = 'IDLE';
+        chatState.category = null;
+        chatState.qty = 0;
+        chatState.hasDesign = null;
+
+        return finalMsg;
+      }
+
+      // 3. Manejo del estado: IDLE (Búsqueda inicial de intenciones)
+      
+      // Saludo
+      if (text.includes('hola') || text.includes('buenos dias') || text.includes('buenas tardes')) {
+        return `¡Hola ${userName}! Un gusto saludarte. Soy TintaBot. ¿De qué material o servicio te gustaría que platiquemos hoy para cotizar o resolver tus dudas?`;
+      }
+
+      // Categoría: Tintas / Serigrafía
+      if (text.includes('malla') || text.includes('hilo') || text.includes('serigrafía') || text.includes('serigrafia') || text.includes('tinta')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'tintas';
+        return `Perfecto, hablemos de <strong>Insumos de Serigrafía</strong> (mallas y tintas Caltex o Plastisol).
+                <br><br>
+                ¿Cuántas piezas, botes de tinta o metros de malla necesitas aproximadamente para tu taller?`;
+      }
+
+      // Categoría: Playeras
+      if (text.includes('playera') || text.includes('camiseta') || text.includes('algodón') || text.includes('poliéster') || text.includes('hoodie') || text.includes('sudadera')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'playeras';
+        return `Excelente elección. En Tintas de México producimos <strong>playeras personalizadas</strong> en algodón (serigrafía) y poliéster (sublimación tacto cero).
+                <br><br>
+                ¿Cuántas prendas estimas mandar a estampar en esta producción?`;
+      }
+
+      // Categoría: Lonas
+      if (text.includes('lona') || text.includes('banner') || text.includes('microperforada') || text.includes('mesh')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'lonas';
+        return `Entendido. Imprimimos <strong>lonas de gran formato</strong> en alta definición (Front y Mesh microperforada).
+                <br><br>
+                ¿Cuántos metros cuadrados de lona requieres aproximadamente para tu anuncio?`;
+      }
+
+      // Categoría: Tarjetas
+      if (text.includes('tarjeta') || text.includes('presentación') || text.includes('barniz') || text.includes('soft touch')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'tarjetas';
+        return `¡Las <strong>tarjetas de presentación</strong> son nuestra especialidad en acabados premium (Mate, UV barniz localizado o textura Soft Touch)!
+                <br><br>
+                ¿Cuántos cientos de tarjetas requieres producir? (ej: "100" para 1 paquete, "500", etc.)`;
+      }
+
+      // Categoría: Volantes
+      if (text.includes('volante') || text.includes('flyer') || text.includes('tríptico') || text.includes('folleto')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'volantes';
+        return `Excelente. Producimos <strong>volantes promocionales</strong> (¼ carta en couché) y <strong>folletos trípticos</strong> plegados.
+                <br><br>
+                ¿Cuántos millares o cientos de volantes tienes contemplado imprimir?`;
+      }
+
+      // Categoría: Stickers
+      if (text.includes('sticker') || text.includes('calca') || text.includes('planilla') || text.includes('holográfico')) {
+        chatState.status = 'GATHERING_QTY';
+        chatState.category = 'stickers';
+        return `Perfecto. Hacemos <strong>stickers de vinil troquelados</strong> impermeables y calcas holográficas premium.
+                <br><br>
+                ¿Cuántas plantillas o piezas individuales de stickers tienes contempladas?`;
+      }
+
+      // Tiempos de entrega
+      if (text.includes('tiempo') || text.includes('tarda') || text.includes('entrega') || text.includes('plazo')) {
+        return `Nuestros plazos de producción estimados son muy ágiles:
+                <ul>
+                  <li>Insumos (Tintas y Mallas): Mismo día en Pachuca o envío express.</li>
+                  <li>Lonas y playeras: 2 a 4 días hábiles.</li>
+                  <li>Tarjetas y Stickers premium: 3 a 5 días hábiles.</li>
+                </ul>
+                ¿Tienes alguna fecha de entrega límite que necesites cumplir?`;
+      }
+
+      // Precios generales
+      if (text.includes('precio') || text.includes('costo') || text.includes('comprar')) {
+        return `Puedes consultar todos los precios base directamente en el <a href="productos.html" style="color:var(--secondary); font-weight:700; text-decoration:underline;">Catálogo de Productos</a>. 
+                Ahí mismo, tras iniciar sesión con las cuentas demo, podrás configurar la cantidad exacta de tu pedido e ir al carrito.`;
+      }
+
+      // Fallback
+      return `Hola. Soy TintaBot. Veo que me preguntas sobre <em>"${msg}"</em>.
+              <br><br>
+              Para poder guiarte mejor con cotizaciones estimadas paso a paso, dime sobre qué tipo de producto gráfico deseas asesoría: <strong>mallas de serigrafía, playeras, lonas, stickers o tarjetas de presentación</strong>.`;
+    }
+  </script>
+</body>
+</html>

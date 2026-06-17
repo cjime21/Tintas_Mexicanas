@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tintas de México | Taller Gráfico y Soluciones Visuales</title>
+  <link rel="icon" type="image/png" href="img/Ícono.png">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* Estilos específicos para la animación de inicio */
+    body.index-body {
+      background-color: #faf8f5; /* Blanco Lienzo Artístico */
+      color: #121212;
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    /* Animación de Gotas Cayendo */
+    .drip-container {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .drip {
+      position: absolute;
+      width: 25px;
+      height: 45px;
+      border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      opacity: 0;
+    }
+
+    .drip-1 {
+      background-color: #236130;
+      animation: fall-drip 1.2s cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.5s forwards;
+    }
+
+    .drip-2 {
+      background-color: #9ABC05;
+      width: 20px;
+      height: 38px;
+      animation: fall-drip 1s cubic-bezier(0.6, -0.28, 0.735, 0.045) 0.9s forwards;
+    }
+
+    .drip-3 {
+      background-color: #E4007C;
+      width: 18px;
+      height: 35px;
+      animation: fall-drip 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045) 1.2s forwards;
+    }
+
+    @keyframes fall-drip {
+      0% {
+        top: -100px;
+        opacity: 0;
+        transform: translateX(-50%) scaleY(1.3);
+      }
+      30% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+        transform: translateX(-50%) scaleY(1);
+      }
+      100% {
+        top: 50%; /* Llega al centro vertical */
+        opacity: 0;
+        transform: translateX(-50%) scale(0.1);
+      }
+    }
+
+    /* Salpicadura Gigante de Pintura */
+    .splash-wrapper {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.3s ease;
+    }
+
+    .splash-svg-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(0);
+      opacity: 0;
+      animation: splat-grow 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1.6s forwards;
+    }
+
+    @keyframes splat-grow {
+      0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1.1) rotate(15deg);
+        opacity: 1;
+      }
+    }
+
+    .splash-main-svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.15));
+    }
+
+    /* Revelación del Logo impreso */
+    .logo-print-container {
+      position: absolute;
+      z-index: 20;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transform: translateY(-10px);
+      cursor: pointer;
+      animation: logo-print 1.5s cubic-bezier(0.25, 0.8, 0.25, 1) 2.5s forwards;
+    }
+
+    .logo-print-container img {
+      max-width: 320px;
+      height: auto;
+      transition: transform 0.4s ease;
+      filter: drop-shadow(0px 10px 25px rgba(0,0,0,0.12)) drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8));
+    }
+
+    .logo-print-container:hover img {
+      transform: scale(1.05) rotate(-3deg);
+    }
+
+    @keyframes logo-print {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+        filter: blur(5px);
+        clip-path: inset(0 0 100% 0); /* Empieza sin imprimirse */
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+        clip-path: inset(0 0 0 0); /* Se revela de arriba a abajo como escobilla */
+      }
+    }
+
+    /* Botón de Entrada */
+    .btn-enter-wrapper {
+      margin-top: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: btn-fade-in 1s cubic-bezier(0.25, 0.8, 0.25, 1) 3.5s forwards;
+      z-index: 25;
+    }
+
+    @keyframes btn-fade-in {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Efecto de fondo artístico */
+    .canvas-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(228, 0, 124, 0.04) 0%, rgba(255, 255, 255, 0) 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Chorreras de pintura al tope */
+    .top-paint-drips {
+      position: absolute;
+      top: -5px;
+      left: 0;
+      width: 100%;
+      height: 130px;
+      z-index: 5;
+      pointer-events: none;
+    }
+    .top-paint-drips svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Lienzo interactivo de salpicaduras */
+    .splat-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .interactive-splat {
+      position: absolute;
+      transform: translate(-50%, -50%) scale(0);
+      transform-origin: center;
+      opacity: 0;
+      animation: splat-pop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      pointer-events: none;
+    }
+    @keyframes splat-pop {
+      0% {
+        transform: translate(-50%, -50%) scale(0) rotate(var(--rot));
+        opacity: 0.95;
+      }
+      50% {
+        transform: translate(-50%, -50%) scale(1.15) rotate(var(--rot));
+        opacity: 0.9;
+      }
+      100% {
+        transform: translate(-50%, -50%) scale(1) rotate(var(--rot));
+        opacity: 0.12; /* Queda de forma tenue en el fondo */
+      }
+    }
+
+    /* Charco de pintura inferior */
+    .bottom-paint-puddle {
+      position: absolute;
+      bottom: -15px;
+      left: 0;
+      width: 100%;
+      height: 90px;
+      z-index: 5;
+      pointer-events: none;
+      transition: height 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .bottom-paint-puddle svg {
+      width: 100%;
+      height: 100%;
+    }
+    @keyframes puddle-rise {
+      0% { transform: scaleY(0.95); }
+      100% { transform: scaleY(1.05); }
+    }
+    .bottom-paint-puddle path {
+      animation: puddle-rise 3.5s ease-in-out infinite alternate;
+      transform-origin: bottom;
+    }
+    @keyframes drip-wave {
+      0% { transform: scaleY(0.97); }
+      100% { transform: scaleY(1.03); }
+    }
+    .top-paint-drips path {
+      animation: drip-wave 4s ease-in-out infinite alternate;
+      transform-origin: top;
+    }
+
+    /* Responsivo para el splash de entrada */
+    @media (max-width: 600px) {
+      .splash-wrapper {
+        width: 320px;
+        height: 320px;
+      }
+      .logo-print-container img {
+        max-width: 220px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .splash-wrapper {
+        width: 260px;
+        height: 260px;
+      }
+      .logo-print-container img {
+        max-width: 180px;
+      }
+    }
+  </style>
+</head>
+<body class="index-body">
+
+  <!-- Fondo con blobs de pintura flotando -->
+  <div class="ambient-glow-container" style="z-index: 1;">
+    <div class="glow-blob glow-blob-pink" style="opacity: 0.08;"></div>
+    <div class="glow-blob glow-blob-lime" style="opacity: 0.08;"></div>
+    <div class="glow-blob glow-blob-green" style="opacity: 0.08;"></div>
+  </div>
+
+  <!-- Chorreras de pintura al tope -->
+  <div class="top-paint-drips">
+    <svg viewBox="0 0 1440 160" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#236130" opacity="0.6" d="M0,0 L1440,0 L1440,50 C1380,80 1320,30 1260,70 C1200,110 1140,50 1080,60 C1020,70 960,100 900,80 C840,60 780,30 720,80 C660,130 600,60 540,50 C480,40 420,110 360,70 C300,30 240,90 180,60 C120,30 60,80 0,40 Z" />
+      <path fill="#9ABC05" opacity="0.75" d="M0,0 L1440,0 L1440,40 C1390,60 1340,30 1290,70 C1240,110 1190,50 1140,45 C1090,40 1040,90 990,65 C940,40 890,60 840,80 C790,100 740,30 690,50 C640,70 590,40 540,90 C490,130 440,50 390,45 C340,40 290,95 240,60 C190,25 140,75 0,35 Z" />
+      <path fill="#E4007C" opacity="0.9" d="M0,0 L1440,0 L1440,25 C1400,50 1360,90 1320,45 C1280,0 1240,110 1200,70 C1160,30 1120,45 1080,80 C1040,120 1000,35 960,55 C920,75 880,50 840,90 C800,130 760,55 720,35 C680,15 640,85 600,55 C560,25 520,110 480,70 C440,30 400,55 360,85 C320,115 280,45 240,35 C200,25 160,80 120,55 C80,30 40,65 0,20 Z" />
+    </svg>
+  </div>
+
+  <!-- Lienzo interactivo para las salpicaduras de clics -->
+  <div class="splat-canvas" id="splat-canvas"></div>
+
+  <!-- Charco de pintura en la parte inferior -->
+  <div class="bottom-paint-puddle">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill="#236130" opacity="0.6" d="M0,100 L1440,100 L1440,70 C1200,50 1000,90 800,60 C600,30 400,80 200,50 C100,35 50,45 0,55 Z" />
+      <path fill="#9ABC05" opacity="0.75" d="M0,100 L1440,100 L1440,80 C1250,65 1100,90 950,70 C800,50 600,85 450,60 C300,45 150,70 0,65 Z" />
+      <path fill="#E4007C" opacity="0.9" d="M0,100 L1440,100 L1440,90 C1300,80 1150,95 1000,85 C850,75 700,95 550,85 C400,75 250,90 0,80 Z" />
+    </svg>
+  </div>
+
+  <div class="canvas-background"></div>
+
+  <!-- Contenedor del Drip (Goteo) -->
+  <div class="drip-container">
+    <div class="drip drip-1"></div>
+    <div class="drip drip-2"></div>
+    <div class="drip drip-3"></div>
+  </div>
+
+  <!-- Contenedor Principal -->
+  <div class="canvas-container">
+    
+    <!-- Contenedor de la Salpicadura -->
+    <div class="splash-wrapper">
+      <div class="splash-svg-container">
+        <!-- SVG Salpicadura Orgánica Multi-tono -->
+        <svg class="splash-main-svg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+          <!-- Salpicadura Rosa Base -->
+          <path fill="#E4007C" opacity="0.9" d="M260,80 C320,60 360,110 380,160 C400,210 440,230 420,280 C400,330 380,390 320,410 C260,430 220,380 180,390 C140,400 90,440 60,390 C30,340 70,300 60,240 C50,180 20,140 60,100 C100,60 140,110 190,90 C240,70 200,100 260,80 Z" />
+          <!-- Salpicadura Verde Limón superpuesta -->
+          <path fill="#9ABC05" opacity="0.85" d="M270,110 C310,100 340,130 360,170 C380,210 410,210 400,250 C390,290 350,330 310,340 C270,350 240,320 200,330 C160,340 120,370 100,340 C80,310 100,280 90,240 C80,200 60,170 90,140 C120,110 150,140 190,130 C230,120 230,120 270,110 Z" />
+          <!-- Salpicadura Verde Bosque interior -->
+          <path fill="#236130" opacity="0.9" d="M250,140 C280,135 310,150 320,180 C330,210 350,210 340,240 C330,270 300,290 270,300 C240,310 220,290 190,295 C160,300 130,320 120,295 C110,270 120,250 115,220 C110,190 95,170 120,150 C145,130 170,150 200,145 C230,140 220,145 250,140 Z" />
+          
+          <!-- Pequeñas salpicaduras satélite -->
+          <circle cx="90" cy="80" r="10" fill="#E4007C" />
+          <circle cx="390" cy="110" r="12" fill="#9ABC05" />
+          <circle cx="430" cy="350" r="8" fill="#236130" />
+          <circle cx="120" cy="410" r="14" fill="#E4007C" />
+          <circle cx="340" cy="420" r="9" fill="#9ABC05" />
+          <circle cx="210" cy="60" r="11" fill="#236130" />
+        </svg>
+      </div>
+
+      <!-- El Logo se "imprime" arriba de la salpicadura -->
+      <a href="info.html" class="logo-print-container" title="Entrar al Taller Gráfico">
+        <img class="logo-glow-filter" src="img/Logo.png" alt="Logo Tintas de México">
+      </a>
+    </div>
+
+    <!-- Botón con referencia al taller/pintura -->
+    <div class="btn-enter-wrapper">
+      <a href="info.html" class="btn-paint btn-paint-accent" style="box-shadow: 0 10px 30px rgba(228, 0, 124, 0.4);">
+        <span>Entrar al Taller de Color</span>
+        <svg style="width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; display: inline-block; vertical-align: middle;" viewBox="0 0 24 24"><path d="M12 22C17.52 22 22 17.52 22 12S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z"></path><circle cx="7.5" cy="10.5" r="1"></circle><circle cx="11.5" cy="7.5" r="1"></circle><circle cx="16.5" cy="9.5" r="1"></circle><circle cx="15.5" cy="14.5" r="1"></circle></svg>
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Transición fluida de página -->
+  <div class="page-transition-overlay"></div>
+
+  <script src="js/transitions.js"></script>
+  
+  <!-- Lógica de salpicaduras interactivas de pintura al hacer clic -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const canvas = document.getElementById('splat-canvas');
+      const puddle = document.querySelector('.bottom-paint-puddle');
+      const colors = ['#E4007C', '#9ABC05', '#236130'];
+      let puddleGrowth = 0;
+
+      function growPuddle() {
+        puddleGrowth = Math.min(puddleGrowth + 6, 110);
+        puddle.style.height = `${90 + puddleGrowth}px`;
+      }
+      
+      // Paths de salpicaduras orgánicas
+      const splatPaths = [
+        "M50,10 C65,10 75,20 80,35 C85,50 95,55 90,70 C85,85 75,90 60,85 C45,90 35,80 25,75 C15,70 10,55 15,40 C20,25 30,20 40,15 Z",
+        "M55,15 C68,8 78,18 85,28 C92,38 98,52 92,65 C86,78 72,88 58,85 C44,82 32,92 22,82 C12,72 18,58 15,45 C12,32 25,22 35,18 Z",
+        "M48,12 C62,5 82,15 88,28 C94,41 96,56 88,68 C80,80 65,92 50,88 C35,84 22,95 12,82 C2,69 15,52 14,38 C13,24 25,18 35,16 Z"
+      ];
+
+      // Salpicadura al hacer clic
+      document.body.addEventListener('click', (e) => {
+        // No salpicar si hace clic en elementos interactivos (como el botón o el logo)
+        if (e.target.closest('.btn-enter-wrapper') || e.target.closest('.logo-print-container')) {
+          return;
+        }
+
+        const size = Math.floor(Math.random() * 110) + 120; // 120px a 230px
+        const rot = Math.floor(Math.random() * 360);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const path = splatPaths[Math.floor(Math.random() * splatPaths.length)];
+
+        // Crear contenedor de la salpicadura
+        const splatDiv = document.createElement('div');
+        splatDiv.className = 'interactive-splat';
+        splatDiv.style.width = `${size}px`;
+        splatDiv.style.height = `${size}px`;
+        splatDiv.style.left = `${e.clientX}px`;
+        splatDiv.style.top = `${e.clientY}px`;
+        splatDiv.style.setProperty('--rot', `${rot}deg`);
+
+        // Generar un par de círculos satélite para simular salpicadura realista
+        const numSatellites = Math.floor(Math.random() * 3) + 2;
+        let satelliteSVGs = '';
+        for (let i = 0; i < numSatellites; i++) {
+          const cx = Math.floor(Math.random() * 60) + 20;
+          const cy = Math.floor(Math.random() * 60) + 20;
+          const r = Math.floor(Math.random() * 5) + 2;
+          satelliteSVGs += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" />`;
+        }
+
+        splatDiv.innerHTML = `
+          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <path d="${path}" fill="${color}" />
+            ${satelliteSVGs}
+          </svg>
+        `;
+
+        canvas.appendChild(splatDiv);
+
+        // Limpiar para que no se sature el DOM tras muchos clics
+        if (canvas.childElementCount > 45) {
+          canvas.removeChild(canvas.firstChild);
+        }
+      });
+
+      // --- LOGICA DE GOTEO CONTINUO AUTOMATICO ---
+      function spawnAutoDrip() {
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const x = Math.random() * 92 + 4; // 4% a 96%
+        
+        const drop = document.createElement('div');
+        drop.className = 'drip-auto';
+        drop.style.left = `${x}%`;
+        drop.style.backgroundColor = color;
+        drop.style.position = 'absolute';
+        drop.style.width = '8px';
+        drop.style.height = '18px';
+        drop.style.borderRadius = '50% 50% 50% 50% / 60% 60% 40% 40%';
+        drop.style.top = '100px'; // Justo debajo del goteo superior
+        drop.style.zIndex = '4';
+        drop.style.opacity = '1';
+        drop.style.pointerEvents = 'none';
+        drop.style.transform = 'scaleY(1.3)';
+        
+        const duration = Math.random() * 1.5 + 1.8; // 1.8s a 3.3s
+        drop.style.transition = `top ${duration}s cubic-bezier(0.55, 0.055, 0.675, 0.19), transform ${duration}s ease-in, opacity 0.2s ${duration - 0.2}s`;
+        
+        document.body.appendChild(drop);
+        
+        // Iniciar caída
+        setTimeout(() => {
+          drop.style.top = 'calc(100vh - 45px)';
+          drop.style.transform = 'scaleY(1)';
+        }, 50);
+        
+        // Al chocar con el charco
+        setTimeout(() => {
+          createPuddleSplash(x, color);
+          growPuddle();
+          drop.style.opacity = '0';
+          setTimeout(() => {
+            drop.remove();
+          }, 250);
+        }, duration * 1000);
+      }
+
+      function createPuddleSplash(xPercent, color) {
+        const splash = document.createElement('div');
+        splash.className = 'interactive-splat';
+        splash.style.width = '50px';
+        splash.style.height = '50px';
+        splash.style.left = `${xPercent}%`;
+        splash.style.top = 'calc(100vh - 40px)';
+        splash.style.setProperty('--rot', `${Math.floor(Math.random() * 360)}deg`);
+        
+        splash.innerHTML = `
+          <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+            <path d="M50,15 C65,15 72,25 75,35 C78,45 85,50 80,62 C75,72 65,78 50,75 C35,78 25,70 18,65 C10,60 12,50 18,38 C22,25 32,18 40,15 Z" fill="${color}" />
+          </svg>
+        `;
+        canvas.appendChild(splash);
+        
+        // Limpiar después de la animación de pop
+        setTimeout(() => {
+          splash.remove();
+        }, 800);
+      }
+
+      // Iniciar goteo continuo automático
+      setInterval(spawnAutoDrip, 1400);
+      // Spawnear 2 iniciales
+      setTimeout(spawnAutoDrip, 400);
+      setTimeout(spawnAutoDrip, 900);
+    });
+  </script>
+</body>
+</html>
