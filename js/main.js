@@ -108,8 +108,30 @@ function getCurrentUser() {
   return user ? JSON.parse(user) : null;
 }
 
+function getRegisteredUsers() {
+  const users = localStorage.getItem('tintas_registered_users');
+  return users ? JSON.parse(users) : [];
+}
+
+function registerUser(name, email, password) {
+  email = email.trim().toLowerCase();
+  const exists = DEMO_USERS.some(u => u.email === email) || getRegisteredUsers().some(u => u.email === email);
+  if (exists) {
+    return { success: false, message: 'Ese correo ya está registrado.' };
+  }
+
+  const registeredUsers = getRegisteredUsers();
+  const newUser = { email, name, pass: password };
+  registeredUsers.push(newUser);
+  localStorage.setItem('tintas_registered_users', JSON.stringify(registeredUsers));
+
+  return { success: true, user: newUser };
+}
+
 function loginUser(email, password) {
-  const user = DEMO_USERS.find(u => u.email === email && u.pass === password);
+  email = email.trim().toLowerCase();
+  const user = DEMO_USERS.find(u => u.email === email && u.pass === password)
+    || getRegisteredUsers().find(u => u.email === email && u.pass === password);
   if (user) {
     localStorage.setItem('tintas_session', JSON.stringify({ email: user.email, name: user.name }));
     return { success: true, user };
@@ -387,6 +409,33 @@ function initPageDrips() {
   setTimeout(spawnStamp, 150 + Math.random() * 250);
 }
 
+// --- MENÚ HAMBURGUESA PARA MÓVIL ---
+function initMobileNav() {
+  const header = document.querySelector('.main-header');
+  const nav = document.querySelector('.nav-menu');
+  if (!header || !nav || document.querySelector('.nav-hamburger')) return;
+
+  const hamburger = document.createElement('button');
+  hamburger.className = 'nav-hamburger';
+  hamburger.type = 'button';
+  hamburger.setAttribute('aria-label', 'Abrir menú de navegación');
+  hamburger.innerHTML = '<span></span><span></span><span></span>';
+  header.appendChild(hamburger);
+
+  hamburger.addEventListener('click', () => {
+    nav.classList.toggle('nav-menu-open');
+    hamburger.classList.toggle('active');
+  });
+
+  // Cerrar el menú al seleccionar un enlace
+  nav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      nav.classList.remove('nav-menu-open');
+      hamburger.classList.remove('active');
+    });
+  });
+}
+
 // --- CONFIGURACIÓN GLOBAL AL CARGAR ---
 document.addEventListener('DOMContentLoaded', () => {
   initWelcomeSplash();
@@ -394,6 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initAmbientGlow();
   updateHeaderUI();
   initScrollReveal();
+  initMobileNav();
 
   // Cambiar padding del header al hacer scroll
   const header = document.querySelector('.main-header');

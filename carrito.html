@@ -13,9 +13,9 @@
   <header class="main-header">
     <a href="index.html" class="header-brand">
       <div class="header-brand-logo-wrapper">
-        <img src="img/Logo.png" alt="Icono Tintas de México">
+        <img src="img/Ícono.png" alt="Icono Tintas de México">
       </div>
-      <div class="brand-text">Tintas de <span>México</span></div>
+      <div class="brand-text"><span class="brand-text-accent">Tintas</span> de <span>México</span></div>
     </a>
     <nav>
       <ul class="nav-menu">
@@ -103,12 +103,12 @@
   <footer class="main-footer">
     <div class="footer-grid">
       <div class="footer-brand-column">
-        <h3>Tintas de <span>México</span></h3>
+        <img src="img/Logo.png" alt="Tintas de México" style="max-width: 180px; height: auto; margin-bottom: 1rem; display: block;">
         <p>Tu espacio de apoyo en consumibles gráficos y soluciones de personalización. Llevamos tus ideas al papel, vinil y textiles.</p>
         <div class="footer-social-links">
-          <a href="#" class="footer-social-btn">FB</a>
-          <a href="#" class="footer-social-btn">IG</a>
-          <a href="https://wa.me/527712353198" target="_blank" class="footer-social-btn">WA</a>
+          <a href="#" class="footer-social-btn" title="Facebook"><svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg></a>
+          <a href="#" class="footer-social-btn" title="Instagram"><svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.5" y2="6.5"></line></svg></a>
+          <a href="https://wa.me/527712981277" target="_blank" class="footer-social-btn" title="WhatsApp"><svg viewBox="0 0 24 24" style="width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></a>
         </div>
       </div>
       <div class="footer-column">
@@ -123,17 +123,17 @@
       <div class="footer-column">
         <h4>Servicios</h4>
         <ul class="footer-links">
-          <li><a href="productos.html">Tintas Serigrafía</a></li>
-          <li><a href="productos.html">Playeras Personalizadas</a></li>
-          <li><a href="productos.html">Impresión de Lonas</a></li>
-          <li><a href="productos.html">Stickers de Vinil</a></li>
+          <li><a href="productos.html?category=tintas">Tintas Serigrafía</a></li>
+          <li><a href="productos.html?category=playeras">Playeras Personalizadas</a></li>
+          <li><a href="productos.html?category=lonas">Impresión de Lonas</a></li>
+          <li><a href="productos.html?category=stickers">Stickers de Vinil</a></li>
         </ul>
       </div>
       <div class="footer-column">
         <h4>Contacto</h4>
         <ul class="footer-links" style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">
           <li>Blvd. Everardo Márquez 300-Local C, Coscotitlán, 42094 Pachuca de Soto, Hgo.</li>
-          <li>771 235 3198</li>
+          <li>771 298 1277</li>
           <li>contacto@tintasdemexico.mx</li>
         </ul>
       </div>
@@ -361,7 +361,7 @@
 
       // Codificar URL de WhatsApp
       const encodedMsg = encodeURIComponent(message);
-      const whatsappUrl = `https://wa.me/527712353198?text=${encodedMsg}`;
+      const whatsappUrl = `https://wa.me/527712981277?text=${encodedMsg}`;
 
       // Vaciar carrito local
       clearCart();
